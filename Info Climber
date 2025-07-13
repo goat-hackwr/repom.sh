@@ -1,0 +1,168 @@
+#!/bin/bash
+
+# Climb the Info Tool by User777
+# All-in-One Ethical Hacking Tool Launcher for Termux
+
+# ──────────────────────────────
+# Make Climb a global command (one-time setup)
+# ──────────────────────────────
+if [ ! -f "/data/data/com.termux/files/usr/bin/climb" ]; then
+  cp "$0" /data/data/com.termux/files/usr/bin/climb
+  chmod +x /data/data/com.termux/files/usr/bin/climb
+  echo -e "\e[1;32m[✓] Installed as a global command: 'climb'\e[0m"
+fi
+
+clear
+
+spinner() {
+  local pid=$!
+  local delay=0.1
+  local spinstr='|/-\\'
+  while [ -d "/proc/$pid" ]; do
+    local temp=${spinstr#?}
+    printf " [%c]  " "$spinstr"
+    local spinstr=$temp${spinstr%$temp}
+    sleep $delay
+    printf "\b\b\b\b\b\b"
+  done
+  printf "    \b\b\b\b"
+}
+
+typing() {
+  text="$1"
+  delay=${2:-0.02}
+  for ((i=0; i<${#text}; i++)); do
+    echo -n "${text:$i:1}"
+    sleep $delay
+  done
+  echo ""
+}
+
+banner() {
+  echo -e "\e[1;36m"
+  echo "╔══════════════════════════════════════════════════════════╗"
+  echo "║                 [ CLIMB THE INFO TOOL ]                 ║"
+  echo "║       Advanced Ethical Hacking Suite for Termux         ║"
+  echo "║              Created & Maintained by: User777           ║"
+  echo "╚══════════════════════════════════════════════════════════╝"
+  echo -e "\e[0m"
+}
+
+menu() {
+  echo -e "\e[1;32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+  echo -e "\e[1;34m MAIN MENU\e[0m"
+  echo -e "\e[1;32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[1]" "Riple + Hunda" "by user777" "riop.sh + hydri.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[2]" "SnapPic" "by user777" "saypic.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[3]" "TUSO + S-DETECT" "by user777" "tuso.sh + sdu.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[4]" "FindLock UserHunter" "by user777" "findlock.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[5]" "Hackermode Tool Hub" "by user777" "hackermode.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[6]" "ReconX (RED_HAWK)" "by user777" "reconx.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[7]" "SQLex (SQLMap)" "by user777" "sqlex.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[8]" "IPSpy" "by user777" "ipspy.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[9]" "Porty (Nmap)" "by user777" "porty.sh"
+  printf "\e[1;33m%-5s %-25s %-15s %-20s\e[0m\n" "[10]" "PassX (cupp)" "by user777" "passx.sh"
+  echo -e "\e[1;33m[11]\e[0m Update Climb the Info"
+  echo -e "\e[1;31m[0]\e[0m Exit"
+  echo -e "\e[1;32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+}
+
+install_dependencies() {
+  typing "Checking & installing dependencies..."
+  pkg update -y && pkg upgrade -y &> /dev/null & spinner
+  pkg install git python python2 php wget curl openssh unzip nmap hydra -y &> /dev/null & spinner
+  command -v pip &>/dev/null || pkg install python-pip -y &> /dev/null & spinner
+  pip install requests beautifulsoup4 tqdm &> /dev/null & spinner
+  echo -e "\nDependencies installed successfully."
+}
+
+riple_hunda_tool() { typing "Launching Riple + Hunda..."; bash riop.sh; bash hydri.sh; }
+snap_pic() { typing "Launching SnapPic..."; bash saypic.sh; }
+tuso_detect_tool() { typing "Launching TUSO + S-DETECT..."; bash tuso.sh; bash sdu.sh; }
+findlock_tool() {
+  typing "Running Sherlock (FindLock)..."
+  if [ ! -d "findlock" ]; then
+    git clone https://github.com/sherlock-project/sherlock findlock
+  fi
+  cd findlock
+  python sherlock.py user777
+  cd ..
+}
+hackermode_tool() {
+  typing "Launching Hackermode..."
+  if [ ! -d "hackermode" ]; then
+    git clone https://github.com/noob-hackers/hackermode
+  fi
+  cd hackermode
+  bash hackermode.sh
+  cd ..
+}
+reconx_tool() {
+  typing "Launching ReconX (RED_HAWK)..."
+  if [ ! -d "reconx" ]; then
+    git clone https://github.com/Tuhinshubhra/RED_HAWK reconx
+  fi
+  cd reconx
+  php rhawk.php
+  cd ..
+}
+sqlex_tool() {
+  typing "Launching SQLex (SQLMap)..."
+  if [ ! -d "sqlex" ]; then
+    git clone --depth 1 https://github.com/sqlmapproject/sqlmap sqlex
+  fi
+  cd sqlex
+  python sqlmap.py -h
+  cd ..
+}
+ipspy_tool() {
+  typing "Launching IPSpy..."
+  curl ipinfo.io
+}
+porty_tool() {
+  typing "Launching Porty (Nmap)..."
+  read -p "Enter target IP or domain: " target
+  nmap $target
+}
+passx_tool() {
+  typing "Launching PassX (cupp)..."
+  if [ ! -d "passx" ]; then
+    git clone https://github.com/Mebus/cupp passx
+  fi
+  cd passx
+  python cupp.py
+  cd ..
+}
+update_tool() {
+  typing "Updating Climb the Info..."
+  rm -rf ClimbTheInfo
+  git clone https://github.com/User777/ClimbTheInfo
+  cd ClimbTheInfo
+  [ -f "climb.sh" ] && bash climb.sh || echo "Update failed: climb.sh not found."
+}
+
+banner
+install_dependencies
+
+while true; do
+  menu
+  echo -e "\e[1;32m────────────────────────────────────────────────────────────\e[0m"
+  echo -ne "Enter your choice (0-11): "
+  read choice
+
+  case $choice in
+    1) riple_hunda_tool;;
+    2) snap_pic;;
+    3) tuso_detect_tool;;
+    4) findlock_tool;;
+    5) hackermode_tool;;
+    6) reconx_tool;;
+    7) sqlex_tool;;
+    8) ipspy_tool;;
+    9) porty_tool;;
+    10) passx_tool;;
+    11) update_tool;;
+    0) echo -e "\nThank you for using Climb the Info. Use responsibly."; exit;;
+    *) echo "Invalid option. Please enter a number between 0 and 11.";;
+  esac
+done
