@@ -163,6 +163,15 @@ while true; do
     10) passx_tool;;
     11) update_tool;;
     0) echo -e "\nThank you for using Climb the Info. Use responsibly."; exit;;
-    *) echo "Invalid option. Please enter a number between 0 and 11.";;
-  esac
+    *)
+      if [[ -z "$choice" ]]; then
+          echo -e "\nNo input detected. Please enter a number (0–11)."
+            elif ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+                echo -e "\nInvalid input: Only numbers are allowed."
+                  else
+                      echo -e "\nInvalid option: '$choice'. Please enter a number between 0 and 11."
+                        fi
+                          sleep 1
+                          ;;
+    esac
 done
